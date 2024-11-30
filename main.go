@@ -67,35 +67,65 @@ func queryType(blogType *graphql.Object) *graphql.Object {
 			Name: "Query", // имя
 			Fields: graphql.Fields{ // описываем запросы, которые могут быть исполнены сервером
 				"blogs": &graphql.Field{
-					Type: graphql.NewList(blogType),
-					//описание функции получения данных
-					Resolve: func(p graphql.ResolveParams) (any, error) {
-						//var blogs []Blog
-						//rows, err := db.Query("SELECT id, title, content FROM blogs")
-						//
-						//if err != nil {
-						//	return nil, err
-						//}
-						////обязательно закрываем
-						//defer rows.Close()
-						////бежим по строкам
-						//for rows.Next() {
-						//	var b Blog
-						//	// Используем метод scan для получения данных в переменную b
-						//	if err := rows.Scan(&b.ID, &b.Title, &b.Content); err != nil {
-						//		return nil, err
-						//	}
-						//	// пишем полученные данные в переменную blogs
-						//	blogs = append(blogs, b)
-						//}
-						var blogs []Blog
-						DB.Raw("SELECT id, title, content FROM blogs").Scan(&blogs)
-						return blogs, nil
+					Type: graphql.NewList(blogType), // тип возвращаемого значения
+					Args: graphql.FieldConfigArgument{ // для использования аргументов в запросе GraphQL, например limit и offset
+						"limit": &graphql.ArgumentConfig{
+							Type: graphql.Int,
+						},
+						"offset": &graphql.ArgumentConfig{
+							Type: graphql.Int,
+						},
+					},
+					Resolve: func(p graphql.ResolveParams) (any, error) { //описание функции получения данных
+						// здесь можно прочитать аргументы, указанные в разделе Args
+						// читаем аргумент limit
+						limit, _ := p.Args["limit"].(int)
+						if limit <= 0 || limit > 20 {
+							limit = 10
+						}
+						// читаем аргумент offset
+						offset, _ := p.Args["offset"].(int)
+						if offset < 0 {
+							offset = 0
+						}
+
+						return getBlogs(limit, offset)
 					},
 				},
 			},
 		},
 	)
+}
+
+// getBlogs Функция возвращает результат запроса
+func getBlogs(limit int, offset int) ([]Blog, error) {
+	var blogs []Blog
+	DB.Raw("SELECT id, title, content FROM blogs LIMIT ? OFFSET ?", limit, offset).Scan(&blogs)
+	return blogs, nil
+
+	//region // Вариант для обычного sql
+
+	//var blogs []Blog
+	//rows, err := db.Query("SELECT id, title, content FROM blogs")
+	//
+	//if err != nil {
+	//	return nil, err
+	//}
+	////обязательно закрываем
+	//defer rows.Close()
+	////бежим по строкам
+	//for rows.Next() {
+	//	var b Blog
+	//	// Используем метод scan для получения данных в переменную b
+	//	if err := rows.Scan(&b.ID, &b.Title, &b.Content); err != nil {
+	//		return nil, err
+	//	}
+	//	// пишем полученные данные в переменную blogs
+	//	blogs = append(blogs, b)
+	//}
+
+	//endregion
+
 }
 
 //endregion

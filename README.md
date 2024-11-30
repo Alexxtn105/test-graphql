@@ -50,12 +50,13 @@ go get github.com/graphql-go/handler
 
 
 ## Ограничение количества выводимых записей:
+Можно указать аргументы в функции `queryType()` для ограничения количества выводимых записей и смещения (`limit` и `offset`)
 ```
 {
-    blogs (limit:2){
+    blogs(limit: 2, offset:1){
         id
         title
-        content
+        
     }
 }
 ```
