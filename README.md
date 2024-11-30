@@ -19,6 +19,9 @@ go get github.com/graphql-go/handler
 ```
 
 
+## Тестирование в Postman:
+![img_2.png](img_2.png)
+
 ------------------------------------
 
 
