@@ -160,9 +160,13 @@ func initDB() {
 	DB = database
 }
 func dbMigrate() {
-	DB.AutoMigrate(
+	err := DB.AutoMigrate(
 		&Blog{},
 	)
+	if err != nil {
+		log.Printf("error on automigrate: %v", err)
+		return
+	}
 }
 
 //endregion
@@ -185,17 +189,15 @@ func main() {
 		log.Fatalf("failed to create schema, error: %v", err)
 	}
 
-	// Шаг 4 из README - создание сервера GraphQL (с использованием graph-ql/handler) - на странице https://github.com/graphql-go/handler
+	// Шаг 4 из README - создание сервера GraphQL (с использованием graph-ql/h) - на странице https://github.com/graphql-go/handler
 	// маршрут должен быть таким:
 	// пишем хэндлер:
-	handler := handler.New(&handler.Config{
+	h := handler.New(&handler.Config{
 		Schema:   &schema,
 		Pretty:   true, // чтобы json выводился красивее
 		GraphiQL: true,
 	})
-	http.Handle("/graphql", handler)
+	http.Handle("/graphql", h)
 	http.ListenAndServe(":8080", nil)
 
-	//
-	//r:=gin.
 }

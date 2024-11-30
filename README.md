@@ -60,6 +60,26 @@ go get github.com/graphql-go/handler
     }
 }
 ```
+
+## Дополнительно
+### Установка драйвера SQLite для IDEA (если не работает автоматическая загрузка)
+По материалам https://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
+
+1. Скачать драйвера на странице https://github.com/xerial/sqlite-jdbc (например, файл `sqlite-jdbc-3.47.1.0.jar`)
+
+2. Закинуть файл в папку: C:\Users\%CURRENT_USER%\AppData\Roaming\JetBrains\IntelliJIdea2024.1\jdbc-drivers
+
+3. В IDEA в окне Database открыть настройки подключения - Data Sources and Drivers, перейти на вкладку Drivers, найти SQLite.
+   3.1 Если в разделе Driver Files есть какие-либо другие файлы, удалить их.
+   3.2 В разделе `Driver Files` нажать `+`, и указать путь к файлу, скачанному в п.1
+   3.3. Нажать Apply
+
+4. Нажать кнопку `Обновить` в окне Database
+
+Скриншот:
+![img_4.png](img_4.png)
+
+
 ------------------------------------
 
 # Теория
