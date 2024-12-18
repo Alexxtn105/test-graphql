@@ -67,7 +67,7 @@ go get github.com/graphql-go/handler
 
 1. Скачать драйвера на странице https://github.com/xerial/sqlite-jdbc (например, файл `sqlite-jdbc-3.47.1.0.jar`)
 
-2. Закинуть файл в папку: %USERPROFILE%\AppData\Roaming\JetBrains\IntelliJIdea2024.1\jdbc-drivers
+2. Закинуть файл в папку `%USERPROFILE%\AppData\Roaming\JetBrains\IntelliJIdea2024.1\jdbc-drivers`
 
 3. В IDEA в окне Database открыть настройки подключения - Data Sources and Drivers, перейти на вкладку Drivers, найти SQLite.
    3.1 Если в разделе Driver Files есть какие-либо другие файлы, удалить их.
